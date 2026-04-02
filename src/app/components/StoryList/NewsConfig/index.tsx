@@ -25,7 +25,7 @@ export default function NewsConfig() {
 
     const ENDI_URLS = ["https://www.elnuevodia.com/noticias/politica/", "https://www.elnuevodia.com/noticias/legislatura/", "https://www.elnuevodia.com/noticias/gobierno/", "https://www.elnuevodia.com/corresponsalias/washington-dc/"];
     const VOCERO_URLS = ["https://www.elvocero.com/gobierno/"];
-    const NOTICEL_URLS = ["https://www.noticel.com/category/gobierno"];
+    const NOTICEL_URLS = ["https://www.noticel.com/category/gobierno", "https://noticel.com/category/politica/", "https://noticel.com/category/legislatura/"];
 
     const SCRAPE_URLS = [ENDI_URLS, VOCERO_URLS, NOTICEL_URLS];
 
