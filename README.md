@@ -1,6 +1,6 @@
 # Política Abierta
 
-Acercando a los boricuas al proceso político.
+Acercando a los boricuas a su proceso político.
 
 ## 📚 Descripción
 
