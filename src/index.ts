@@ -28,8 +28,8 @@ if (app.isPackaged) {
   // Note: Adjust the relative path based on where you placed the file in extraResources
 } else {
   // Path when running in development
-  process.env.PA_SUTRA_PEM_PATH = "/Users/marcel/Projects/Imparcial/pa_electron/src/sutra.pem";
-  process.env.PA_GO_DADDY_CA_PEM_PATH = "/Users/marcel/Projects/Imparcial/pa_electron/src/go_daddy_merged_ca.pem";
+  process.env.PA_SUTRA_PEM_PATH = `${process.env.PA_PROJECT_DIR}/src/sutra.pem`;
+  process.env.PA_GO_DADDY_CA_PEM_PATH = `${process.env.PA_PROJECT_DIR}/src/go_daddy_merged_ca.pem`;
 
 }
 

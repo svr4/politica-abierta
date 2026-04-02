@@ -33,6 +33,16 @@ git clone https://github.com/svr4/politica-abierta.git
 cd politica-abierta
 npm install
 make init
+```
+
+Crea un archivo `.env` en el directorio `politica-abierta` con las siguientes variables:
+```bash
+REACT_APP_ENV=DEV
+REACT_APP_DB_PATH=[absolute_path_to]/politica-abierta/db/imparcial.db
+```
+
+Corre la aplicación.
+```bash
 npm start
 ```
 
