@@ -56,4 +56,4 @@ La plataforma aún no está lista para el uso de los usuarios. A los que se expe
 
 ## 📜 Licencia
 
-Civic Innovation License v1.0
+[Civic Innovation License v1.0](https://github.com/svr4/politica-abierta/blob/main/LICENCE)
