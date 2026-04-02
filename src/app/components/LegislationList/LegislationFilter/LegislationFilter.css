@@ -1,0 +1,72 @@
+.legislation-filter-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 0 10px 0;
+    width: 100vw;
+}
+
+.legislation-filter-controls-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    column-gap: 100px;
+    width: 100%;
+}
+
+.legislation-filter-controls-container div {
+    width: 375px;
+}
+
+.textbox-w-button {
+    padding: 10px;
+    border: 1px solid black;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    box-shadow: 0px 0px 1px gray;
+    width: 100%;
+    box-sizing: border-box;
+    background-color: var(--even-tr-color);
+    color: var(--color-2);
+}
+
+.textbox-button {
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    box-shadow: 0px 0px 2px gray;
+    padding: 10px;
+    border: 0;
+    height: auto;
+    width: 55px !important;
+    text-align: center;
+}
+
+.textbox-button:hover {
+  cursor: pointer;
+  background-color: var(--color-2);
+  color: var(--color-1);
+}
+
+.textbox-button:active {
+  background-color: var(--color-2);
+  color: var(--color-1);
+  opacity: 0.7;
+  box-shadow: 0 0 5px #333;
+  transform: translateY(1px);
+}
+
+@media only screen and (min-width: 281px) and (max-width: 600px) {
+    .legislation-filter-controls-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        row-gap: 10px;
+        column-gap: unset;
+        width: 100%;
+    }
+
+    .legislation-filter-controls-container div {
+        width: auto;
+    }
+}

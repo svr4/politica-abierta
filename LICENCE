@@ -1,0 +1,180 @@
+CIVIC INNOVATION LICENSE
+
+Version 1.0
+
+PREAMBLE
+
+The Civic Innovation License (CIL) is a free, copyleft license designed specifically for software created by open source communities operating within or in support of government, public sector institutions, non profit 501(c)(3) organizations, public benefit corporations and individuals, for the direct benefit of all citizens. It is rooted in the principles of the GNU General Public License version 2.0 (GPL-2.0), extended with provisions that reflect the public nature and civic mission of this class of software.
+
+The fundamental principle of this license is that civic software — software developed for the public good using public or community resources — must remain a public asset. It must remain open, accessible, and freely available to be studied, modified, and redistributed. However, it must never become a vehicle for private commercial gain. Civic software belongs to the people.
+
+When we speak of "free software," we refer to freedom, not price. This license is designed to guarantee your freedom to share and change civic software — and to ensure that any software derived from civic work remains equally free and equally civic in purpose.
+
+To protect these rights, this license makes clear that no one may take civic software and use it for private commercial advantage. Private for-profit enterprises may not use, redistribute, or build upon software covered by this license for commercial purposes. Permitted entities are restricted to government bodies, public agencies, registered non-profit organizations, public benefit corporations, individuals, and publicly owned enterprises operating in the interest of citizens.
+
+The precise terms and conditions for copying, distribution, modification, and use follow below.
+
+SECTION 1 — DEFINITIONS
+
+For the purposes of this License, the following definitions apply:
+
+"This License" refers to Version 1.0 of the Civic Innovation License (CIL-1.0).
+
+"The Program" refers to any copyrightable work licensed under this License.
+
+"You" (or "Your") refers to any individual or legal entity exercising rights granted by this License.
+
+"Civic Software" means software developed by or on behalf of open source communities operating in connection with government, public institutions or individuals, intended to serve the public interest.
+
+"Permitted Entity" means any of the following:
+(a) A government body or public agency at any level (local, regional, national, or supra-national);
+(b) A registered non-profit organization recognized under applicable law (including 501(c)(3) organizations in the United States and their equivalents in other jurisdictions);
+(c) A public benefit corporation or community interest company, incorporated with a legal mandate to operate for the public good and not primarily for the financial benefit of shareholders or members;
+(d) A publicly owned enterprise in which the majority ownership interest is held by one or more government bodies;
+(e) An individual or volunteer contributor acting in a non-commercial civic or educational capacity.
+
+"Commercial Use" means use of the Program primarily intended for or directed toward commercial advantage or monetary compensation, including but not limited to: use by for-profit corporations, integration into commercial products or services, or deployment in environments operated for profit, except where such use falls within the definition of Permitted Entity above.
+
+"Source Code" means the preferred form of the Program for making modifications, including all associated interface definition files, scripts used to control compilation, and installation.
+
+"Derivative Work" means any work that is based on or derived from the Program, including translations, modifications, adaptations, or any work that incorporates all or a portion of the Program.
+
+SECTION 2 — GRANT OF LICENSE
+
+Subject to the terms and conditions of this License, each contributor hereby grants to You a worldwide, royalty-free, non-exclusive, irrevocable license to:
+
+	•	Copy and distribute verbatim copies of the Program's source code and object code as you receive it;
+	•	Study and understand how the Program works;
+	•	Modify the Program or any portion of it, thus forming a Derivative Work;
+	•	Distribute copies of such Derivative Works to the public, provided the conditions in this License are met;
+
+THIS GRANT IS CONDITIONED UPON YOUR STATUS AS A PERMITTED ENTITY AND YOUR COMPLIANCE WITH ALL TERMS OF THIS LICENSE. If you are not a Permitted Entity, you are not granted any rights under this License and may not use, copy, modify, or distribute the Program.
+
+SECTION 3 — CIVIC USE RESTRICTION
+
+The rights granted in Section 2 are expressly limited to Permitted Entities as defined in Section 1. This License does not grant any rights to use the Program for Commercial Use by for-profit entities.
+
+Specifically, the following are PROHIBITED under this License:
+
+	•	Use, deployment, integration, or distribution of the Program by a for-profit private corporation, limited liability company, partnership, or similar entity organized primarily for commercial purposes;
+	•	Sale of the Program itself, or of any service whose value derives primarily from providing access to the Program, for commercial profit;
+	•	Incorporation of the Program, in whole or in part, into proprietary commercial software products;
+	•	Use of the Program to provide commercial Software-as-a-Service (SaaS) to paying customers, except by Permitted Entities providing such services to citizens or government bodies for civic purposes.
+
+For the avoidance of doubt: a private contractor or vendor hired by a Permitted Entity to deploy or maintain the Program solely on behalf of that Permitted Entity may do so, provided the contractor does not claim independent rights to the Program and does not use the Program for any other commercial purpose.
+
+If You are uncertain whether Your use qualifies as permitted, You should seek a written determination from the original copyright holders, legal representation of the contributors or the designated successor entity for the stewardship of the Program.
+
+SECTION 4 — VERBATIM COPYING
+
+You may copy and distribute verbatim copies of the Program's source code as you receive it, in any medium, provided that you conspicuously and appropriately publish on each copy:
+
+(a) An appropriate copyright notice;
+(b) A disclaimer of warranty as set forth in Section 10;
+(c) A copy of or reference to this License;
+(d) A clear statement that the Program is Civic Software governed by the Civic Innovation License v1.0 and subject to civic use restrictions.
+
+You may charge a reasonable fee for the physical or electronic act of transferring or hosting a copy. You may not charge a license fee for the rights granted under this License. You may, however, offer support, maintenance, or implementation services for a fee, provided You are a Permitted Entity and such services are offered in furtherance of civic purposes.
+
+SECTION 5 — MODIFICATIONS AND DERIVATIVE WORKS
+
+You may modify your copy or copies of the Program or any portion of it, forming Derivative Works, and copy and distribute such modifications or Derivative Works under the terms of Section 4 above, provided that you also meet all of the following conditions:
+
+(a) You must cause the modified files to carry prominent notices stating that you changed the files and the date of any change;
+(b) You must cause any work that you distribute or publish that in whole or in part contains or is derived from the Program, to be licensed as a whole at no charge to all third parties under the terms of this License;
+(c) If the modified Program normally reads commands interactively when run, you must cause it, when started running for such interactive use in the most ordinary way, to print or display an announcement including an appropriate copyright notice and a notice that there is no warranty (or that you provide a warranty), and that this program is Civic Software distributed under the Civic Innovation License, and how users can view a copy of this License;
+(d) The Derivative Work must remain Civic Software and must not be relicensed under any license that removes the civic use restrictions or the copyleft obligations of this License;
+(e) Derivative Works must be distributed only to Permitted Entities.
+
+These requirements apply to the modified work as a whole. If identifiable sections of that work are not derived from the Program, and can be reasonably considered independent and separate works in themselves, then this License does not apply to those sections when you distribute them as separate works. But when you distribute the same sections as part of a whole that is a Derivative Work, the entire work must be licensed under this License.
+
+SECTION 6 — DISTRIBUTION IN OBJECT CODE OR EXECUTABLE FORM
+
+You may copy and distribute the Program (or a Derivative Work under Section 5) in object code or executable form under the terms of Sections 4 and 5, provided that you also:
+
+(a) Accompany it with the complete corresponding machine-readable source code, which must be distributed under the terms of Sections 4 and 5 above; or
+(b) Accompany it with a written offer, valid for at least three years, to give any third party — for no charge beyond the reasonable cost of physically performing the distribution — a complete machine-readable copy of the corresponding source code; or
+(c) Accompany it with the information you received as to the offer to distribute the corresponding source code (this option is permitted only for non-commercial distribution and only if you received the Program in object code or executable form with such an offer).
+
+Source code distributed under this section must be under the terms of this License, and must include all the materials needed to modify and compile the object code.
+
+SECTION 7 — NETWORK USE AND SERVICE DEPLOYMENT
+
+If you run a modified version of the Program on a server or in a networked environment and allow other parties to interact with it remotely through a computer network, you must make the complete corresponding source code of your modified version available to those users under the terms of this License.
+
+This obligation applies whether or not You distribute the Program. The purpose of this provision is to ensure that civic communities retain access to improvements made to their software even when it is deployed as a service rather than distributed as software. This section constitutes an affirmative software freedom guarantee for networked civic software.
+
+You must make the source code available through a publicly accessible repository (such as a government code repository, a civic code commons, or a public version control platform), and must prominently disclose the location of this repository to all users of the service.
+
+SECTION 8 — COPYLEFT AND LICENSE COMPATIBILITY
+
+You may not impose any further restrictions on the recipients' exercise of the rights granted herein. You may not sublicense this software. Each time you redistribute the Program (or any Derivative Work), the recipient automatically receives a license from the original licensors to copy, distribute, or modify the Program subject to these terms and conditions. You may not impose any further restrictions on the recipients' exercise of the rights granted herein.
+
+This License is not compatible with proprietary licenses or licenses that permit Commercial Use by non-Permitted Entities. Any attempt to combine this Program with software under such licenses, in a way that would require the distribution of this Program under those licenses, is expressly prohibited.
+
+Works licensed under GPL-2.0 or GPL-3.0 may be incorporated into software governed by this License by Permitted Entities, provided that the resulting combined work is governed entirely by this License and not redistributed to non-Permitted Entities for commercial purposes.
+
+SECTION 9 — PATENT RIGHTS
+
+Each contributor grants to You a non-exclusive, worldwide, royalty-free patent license under the contributor's essential patent claims, to make, use, import, and otherwise run, modify, and distribute the Program.
+
+If You institute patent litigation against any entity (including a cross-claim or counterclaim in a lawsuit) alleging that the Program or a contribution incorporated within the Program constitutes patent infringement, then any patent licenses granted to You under this License for that Program shall terminate as of the date such litigation is filed.
+
+No contributor may grant patent licenses that allow the Program to be used for Commercial Use by non-Permitted Entities.
+
+SECTION 10 — DISCLAIMER OF WARRANTY
+
+THERE IS NO WARRANTY FOR THIS PROGRAM, TO THE EXTENT PERMITTED BY APPLICABLE LAW. EXCEPT WHEN OTHERWISE STATED IN WRITING, THE COPYRIGHT HOLDERS AND/OR OTHER PARTIES PROVIDE THE PROGRAM "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE ENTIRE RISK AS TO THE QUALITY AND PERFORMANCE OF THE PROGRAM IS WITH YOU. SHOULD THE PROGRAM PROVE DEFECTIVE, YOU ASSUME THE COST OF ALL NECESSARY SERVICING, REPAIR OR CORRECTION.
+
+NOTWITHSTANDING THE FOREGOING, CONTRIBUTORS TO CIVIC SOFTWARE UNDER THIS LICENSE AFFIRM THEIR INTENT TO BUILD SOFTWARE THAT IS SAFE, ACCESSIBLE, AND BENEFICIAL TO ALL CITIZENS. WHILE LEGALLY NO WARRANTY IS MADE, THE CIVIC MISSION OF THIS LICENSE ENCOURAGES THE HIGHEST STANDARDS OF QUALITY, SECURITY, ACCESSIBILITY, AND EQUITY IN SOFTWARE DEVELOPMENT.
+
+SECTION 11 — LIMITATION OF LIABILITY
+
+IN NO EVENT UNLESS REQUIRED BY APPLICABLE LAW OR AGREED TO IN WRITING WILL ANY COPYRIGHT HOLDER, OR ANY OTHER PARTY WHO MAY MODIFY AND/OR REDISTRIBUTE THE PROGRAM AS PERMITTED ABOVE, BE LIABLE TO YOU FOR DAMAGES, INCLUDING ANY GENERAL, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OR INABILITY TO USE THE PROGRAM (INCLUDING BUT NOT LIMITED TO LOSS OF DATA OR DATA BEING RENDERED INACCURATE OR LOSSES SUSTAINED BY YOU OR THIRD PARTIES OR A FAILURE OF THE PROGRAM TO OPERATE WITH ANY OTHER PROGRAMS), EVEN IF SUCH HOLDER OR OTHER PARTY HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
+
+SECTION 12 — CIVIC EQUITY AND ACCESSIBILITY
+
+In the spirit of the civic mission of this License, contributors and distributors are strongly encouraged — and where required by applicable law are obligated — to ensure that Civic Software is:
+
+	•	Accessible to people with disabilities, in conformance with applicable accessibility standards (such as WCAG 2.1 AA or national equivalents);
+	•	Available in all official languages of the jurisdiction in which it is deployed, where practicable;
+	•	Designed with the privacy and security of citizen data as a primary concern;
+	•	Non-discriminatory in its design and operation, serving all segments of the public equitably;
+	•	Transparent in its operation and decision-making logic, especially when used in government decisions affecting citizens.
+
+These are aspirational standards rooted in the civic purpose of this License. Failure to meet these standards does not, by itself, constitute a violation of the License, but developers and deployers of Civic Software are expected to strive toward them as a matter of civic ethics and responsibility.
+
+SECTION 13 — ENFORCEMENT AND TERMINATION
+
+You may not copy, modify, sublicense, or distribute the Program except as expressly provided under this License. Any attempt otherwise to copy, modify, sublicense, or distribute the Program is void, and will automatically terminate your rights under this License.
+
+However, parties who have received copies, or rights, from you under this License will not have their licenses terminated so long as such parties remain in full compliance.
+
+If a non-Permitted Entity uses the Program in violation of this License, the copyright holders may pursue all available legal remedies, including injunctive relief and damages. Additionally, the violating entity shall be required to immediately cease all use of the Program and destroy all copies in their possession.
+
+The stewardship body of this License may issue written exceptions to the civic use restriction upon application, subject to conditions it deems appropriate to preserve the civic character of the software.
+
+SECTION 14 — FUTURE VERSIONS OF THIS LICENSE
+
+Midnite Limited Liability Company or the successor entity may publish revised and/or new versions of the Civic Innovation License from time to time. Such new versions will be similar in spirit to the present version but may address new legal, technical, or civic concerns.
+
+Each version is given a distinguishing version number. If the Program specifies that it is governed by a specific version of the Civic Innovation License, you may use the Program only under the terms of that version. If the Program specifies "any later version," you may choose to follow the terms of any later version published by the Open Civic Commons.
+
+If the Program does not specify a version number of the Civic Innovation License, then the latest version of the license applies.
+
+SECTION 15 — HOW TO APPLY THIS LICENSE TO YOUR WORK
+
+To apply the Civic Innovation License to your work, attach the following notices to the program. It is safest to attach them to the start of each source file to most effectively state the exclusion of warranty; each file should have at least the "copyright" line and a pointer to where the full notice is found.
+
+<One line to give the program's name and a brief idea of what it does.>
+Copyright (C) <year> <name of author>
+
+This program is Civic Software licensed under the Civic Innovation License v1.0.
+It may only be used by Permitted Entities (governments, non-profits,
+public benefit corporations, and publicly owned enterprises).
+Commercial use by for-profit entities is strictly prohibited.
+
+You should have received a copy of the Civic Innovation License
+along with this program. If not, see <https://civiccommons.org/licenses/cil-1.0>.
+
+Also add information on how to contact you by electronic and paper mail. If your civic project has a project management committee or governance board, provide contact information for that body as well.

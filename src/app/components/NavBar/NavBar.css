@@ -1,0 +1,227 @@
+.nav-bar{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  background-color: var(--nav-bar-bg);
+  color: white;
+  width: 100vw;
+}
+
+.nav-bar-title {
+    /* flex-basis: 120vw; */
+}
+
+/* .nav-bar div{
+  padding: 0px 10px 0px 0px;
+} */
+
+.refresh:hover {
+  cursor: pointer;
+}
+
+.nav-bar-item{
+  font-weight: bold;
+  font-size: 25px;
+  display: inline-flex;
+  text-align: center;
+}
+
+.nav-bar-item > div {
+  margin: 15px 0px 15px 0px;
+}
+
+.nav-bar-item a {
+  color: var(--color-2);
+  text-decoration: none;
+}
+
+.nav-bar-item a:visited {
+  color: var(--color-2);
+  text-decoration: none;
+}
+
+.notification-container {
+    position: absolute;
+    /* background-color: rgb(24,23,24); */
+    background-color: var(--color-1);
+    padding: 10px;
+    width: 350px;
+    opacity: 0;
+    visibility: hidden;
+    box-shadow: 0px 1px 7px gray;
+    border-radius: 5px;
+}
+
+.notification-data {
+    display: flex;
+    flex-direction: column;
+    overflow-y: scroll;
+    height: 600px;
+}
+
+.notification-item {
+    font-size: large;
+    text-wrap: wrap;
+    width: 350px;
+    padding: 10px;
+}
+
+.notification-item:hover {
+    cursor: pointer;
+}
+
+.notification-item-unread {
+    background-color: rgba(203, 242, 249, 0.1);
+}
+
+.hide-notification-container {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.5s ease-in, visibility 0s;
+}
+
+.show-notification-container {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.5s ease-out, visibility 0s 0.5s;
+}
+
+.navburger {
+    visibility: hidden;
+}
+
+@media only screen and (min-width: 320px) and (max-width: 430px) {
+
+    /* .nav-bar div{
+        padding: 0px 10px 0px 0px;
+    } */
+
+    .nav-collapse {
+        display: none;
+    }
+
+    .navburger {
+        visibility: visible;
+    }
+
+    .nav-bar{
+        display: flex;
+        flex-direction: column;
+        justify-content: unset;
+        align-items: center;
+        background-color: var(--nav-bar-bg);
+        color: white;
+    }
+
+    .notification-container {
+        position: absolute;
+        background-color: rgb(24,23,24);
+        padding: 10px;
+        width: 355px;
+        opacity: 0;
+        visibility: hidden;
+        margin-left: -80px;
+    }
+
+}
+
+@media only screen and (min-width: 768px) and (max-width: 1024px) {
+
+    /* .nav-bar div{
+        padding: 0px 10px 0px 0px;
+    } */
+
+    .nav-bar-title {
+        /* flex-basis: 45%; */
+        flex-basis: 20%;
+    }
+
+    .navburger {
+        visibility: hidden;
+    }
+
+    .nav-bar{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+        background-color: var(--nav-bar-bg);
+        color: white;
+    }
+
+    .notification-container {
+        position: absolute;
+        background-color: rgb(24,23,24);
+        padding: 10px;
+        width: 355px;
+        opacity: 0;
+        visibility: hidden;
+    }
+
+}
+
+
+@media only screen and (max-width: 320px) and (max-height: 568px){
+
+    .nav-bar div{
+        padding: 0px 5px 0px 0px;
+    }
+
+    .nav-collapse {
+        display: none;
+    }
+
+    .navburger {
+        visibility: visible;
+    }
+
+    .nav-bar{
+        display: flex;
+        flex-direction: column;
+        justify-content: unset;
+        align-items: center;
+        background-color: var(--nav-bar-bg);
+        color: white;
+    }
+
+    .notification-container {
+        position: absolute;
+        background-color: rgb(24,23,24);
+        padding: 10px;
+        width: 355px;
+        opacity: 0;
+        visibility: hidden;
+        margin-left: -80px;
+    }
+
+}
+
+@media only screen and (max-width: 540px) and (max-height: 720px){
+
+    .nav-collapse {
+        display: none;
+    }
+
+    .navburger {
+        visibility: visible;
+    }
+
+    .nav-bar{
+        display: flex;
+        flex-direction: column;
+        justify-content: unset;
+        align-items: center;
+        background-color: var(--nav-bar-bg);
+        color: white;
+    }
+
+    .notification-container {
+        position: absolute;
+        background-color: rgb(24,23,24);
+        padding: 10px;
+        width: 355px;
+        opacity: 0;
+        visibility: hidden;
+        margin-left: -80px;
+    }
+
+}

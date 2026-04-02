@@ -1,0 +1,109 @@
+.legislation-settings-header-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  padding: 10px 0 10px 0;
+  width: 100vw;
+}
+
+.legislation-settings-header-item{
+  font-weight: bold;
+  font-size: 20px;
+  display: inline-flex;
+}
+
+.legislation-settings-header-item:hover {
+  cursor: pointer;
+}
+
+.legislation-settings-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    row-gap: 20px;
+    width: 100vw;
+}
+
+.legislation-settings-items-container {
+    display: flex;
+    flex-direction: row;
+    column-gap: 10px;
+    width: 400px;
+    align-items: baseline;
+}
+
+.legislation-settings-items {
+
+}
+
+.committee-select {
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 2px gray;
+    width: 100%;
+    background-color: var(--even-tr-color);
+    color: var(--color-2);
+}
+
+.textbox {
+    padding: 10px;
+    border: 1px solid black;
+    border-radius: 10px;
+    box-shadow: 0px 0px 1px gray;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.selected-committee-container {
+    display: flex;
+    flex-direction: row;
+    width: 50%;
+    column-gap: 10px;
+    flex-flow: wrap;
+    padding-bottom: 10px;
+}
+
+.selected-committee-item {
+    display: flex;
+    flex-direction: row;
+}
+
+.selected-committee-item-active {
+    border: 3px solid blue;
+}
+
+.committee-selected {
+    background-color: lightgray;
+    color: black;
+}
+
+.committee-button {
+    padding: 10px;
+    user-select: none;
+    border-radius: 10px;
+}
+
+.committee-button:hover {
+    cursor: pointer;
+}
+
+.committee-button:active {
+    box-shadow: 0 0 5px #333;
+    transform: translateY(1px);
+}
+
+/* @media only screen and (max-width: 375px) and (max-height: 667px){ */
+@media only screen and (min-width: 281px) and (max-width: 667px){
+    .selected-committee-container {
+        display: flex;
+        flex-direction: row;
+        width: unset;
+        column-gap: 10px;
+        flex-flow: wrap;
+    }
+
+    .legislation-settings-items-container {
+        width: 350px;
+    }
+}

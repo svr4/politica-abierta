@@ -1,0 +1,377 @@
+.story-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+}
+
+.story-container > div {
+  /* margin: 20px; */
+  margin-top: 10px;
+}
+
+.story-item {
+  border-width: 0.5px;
+  border-color: gray;
+  border-style: solid;
+  border-radius: 5px;
+  /* flex-basis: 50vw; */
+  width: 50vw;
+  height: auto;
+  /* box-shadow: 0px 0px 0px gray; */
+  box-shadow: 0px 1px 7px gray;
+  /* transition: box-shadow 0.3s; */
+}
+
+.story-item-preview {
+  border-width: 0.5px;
+  border-color: gray;
+  border-style: solid;
+  border-radius: 5px;
+  flex-basis: 50vw;
+  width: 50vw;
+  height: auto;
+  box-shadow: 0px 1px 7px gray;
+  padding: 0px 0px 10px 0px;
+}
+
+.story-item-title {
+  font-weight: bolder;
+  font-size: 25px;
+  padding: 15px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.story-data-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.story-data-item {
+  padding: 10px;
+  flex-basis: 50vw;
+}
+
+.story-data-container p {
+  font-weight: 300;
+}
+
+.story-data-container label {
+  font-weight: bold;
+}
+
+.story-data-container img {
+  /* width: 320px; */
+  width: 100%;
+}
+
+.story-item a {
+  color: var(--color-2);
+  text-decoration: none;
+}
+
+.story-item a:visited {
+  color: var(--color-2);
+  text-decoration: none;
+}
+
+.story-data-item label:hover {
+  cursor: pointer;
+}
+
+.story-controls-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  padding: 10px;
+}
+
+.sm-form-button {
+  padding: 5px;
+  border-radius: 10px;
+  box-shadow: 0px 0px 2px gray;
+  text-align: center;
+  cursor: pointer;
+  background-color: var(--color-1);
+  color: var(--color-2);
+}
+
+.sm-form-button:hover {
+  background-color: var(--color-2);
+  color: var(--color-1);
+}
+
+.form-button {
+  padding: 10px;
+  font-size: large;
+  border-radius: 10px;
+  box-shadow: 0px 0px 2px gray;
+  text-align: center;
+  cursor: pointer;
+  background-color: var(--color-1);
+  color: var(--color-2);
+}
+
+.form-button:hover {
+  background-color: var(--color-2);
+  color: var(--color-1);
+}
+
+.form-button:active {
+  background-color: var(--color-2);
+  color: var(--color-1);
+  opacity: 0.7;
+  box-shadow: 0 0 5px #333;
+  transform: translateY(1px);
+}
+
+.sm-form-button:active {
+  background-color: var(--color-2);
+  color: var(--color-1);
+  opacity: 0.7;
+  box-shadow: 0 0 5px #333;
+  transform: translateY(1px);
+}
+
+.sm-button {
+  padding: 5px;
+  border-radius: 10px;
+  box-shadow: 0px 0px 2px gray;
+  text-align: center;
+}
+
+.sm-button:hover {
+  cursor: pointer;
+  background-color: black;
+  color: white;
+}
+
+.sm-button:active {
+  background-color: var(--color-2);
+  color: var(--color-1);
+  opacity: 0.7;
+  box-shadow: 0 0 5px #333;
+  transform: translateY(1px);
+}
+
+.button {
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 0px 0px 2px gray;
+  text-align: center;
+}
+
+.button:hover {
+  cursor: pointer;
+  background-color: var(--color-2);
+  color: var(--color-1);
+}
+
+.button:active {
+  background-color: var(--color-2);
+  color: var(--color-1);
+  opacity: 0.7;
+  box-shadow: 0 0 5px #333;
+  transform: translateY(1px);
+}
+
+.spinner {
+    width: 15px;
+    height: 15px;
+    border: 4px solid #f3f3f3; /* Light grey border */
+    border-top: 4px solid var(--color-2); /* Blue border for the spinning part */
+    border-radius: 50%;
+    animation: spin 1s linear infinite; /* 1 second, linear, infinite rotation */
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.story-ai-summary-container {
+  padding: 10px;
+  line-height: 1.5;
+  /* transition: visible 0.5 ease-in; */
+  border-left: 10px solid lightgray;
+  border-radius: 10px;
+  margin-top: 10px;
+  box-shadow: 0px 0px 2px gray;
+}
+
+.story-ai-summary-container label {
+  font-weight: bold;
+}
+
+a {
+  color: white;
+}
+
+a:visited {
+  color: var(--color-2);
+}
+
+.skeleton-card {
+  width: 300px;
+  border: 1px solid var(--color-1);
+  padding: 15px;
+  margin: 20px;
+  border-radius: 8px;
+}
+
+.skeleton-block {
+  width: 100%;
+  height: 150px;
+  background-color: var(--color-1);
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
+
+.skeleton-text-line {
+  height: 15px;
+  background-color: var(--color-1);
+  margin-bottom: 8px;
+  border-radius: 2px;
+}
+
+.skeleton-text-line.short {
+  width: 25%;
+}
+
+.skeleton-text-line.medium {
+  width: 90%;
+}
+
+.skeleton-block,
+.skeleton-text-line {
+  position: relative;
+  overflow: hidden; /* Hide the gradient outside the element */
+}
+
+.skeleton-block::after,
+.skeleton-text-line::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  transform: translateX(-100%); /* Start off-screen to the left */
+  background-image: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.2) 20%,
+    rgba(255, 255, 255, 0.5) 60%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  animation: shimmer 1.5s infinite; /* Apply the animation */
+}
+
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%); /* Move across to the right */
+  }
+}
+
+
+
+/* GS 5*/
+@media only screen and (max-width: 360px) and (max-height: 640px){
+  .story-item {
+    border-width: 0.5px;
+    border-color: gray;
+    border-style: solid;
+    border-radius: 5px;
+    width: 340px;
+    height: auto;
+    box-shadow: 0px 1px 7px gray;
+    /* box-shadow: 0px 0px 0px gray;
+    transition: box-shadow 0.3s; */
+  }
+
+  img {
+    width: 320px;
+    height: auto;
+  }
+
+  .story-data-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+}
+
+/* iPhone 5 */
+@media only screen and (max-width: 320px) and (max-height: 568px){
+  .story-item {
+    border-width: 0.5px;
+    border-color: gray;
+    border-style: solid;
+    border-radius: 5px;
+    width: 300px;
+    height: auto;
+    box-shadow: 0px 1px 7px gray;
+    /* box-shadow: 0px 0px 0px gray;
+    transition: box-shadow 0.3s; */
+  }
+
+  img {
+    width: 280px !important;
+    height: auto;
+  }
+
+  .story-data-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+}
+/* iPhone 6/7/8 and Pluses */
+@media only screen and (min-width: 320px) and (max-width: 450px){
+  .story-item {
+    border-width: 0.5px;
+    border-color: gray;
+    border-style: solid;
+    border-radius: 5px;
+    width: 325px;
+    height: auto;
+    box-shadow: 0px 1px 7px gray;
+    /* box-shadow: 0px 0px 0px gray;
+    transition: box-shadow 0.3s; */
+  }
+
+  img {
+    width: 320px;
+    height: auto;
+  }
+
+  .story-data-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+}
+/* iPad & Pro */
+@media only screen and (min-width: 768px) and (max-width: 1024px){
+  .story-item {
+    border-width: 0.5px;
+    border-color: gray;
+    border-style: solid;
+    border-radius: 5px;
+    width: 700px;
+    height: auto;
+    box-shadow: 0px 1px 7px gray;
+    /* box-shadow: 0px 0px 0px gray;
+    transition: box-shadow 0.3s; */
+  }
+
+  .story-data-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+  }
+}
