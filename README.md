@@ -31,6 +31,7 @@ aplicación sirve para que todas las personas y organizaciones que participan de
 ```bash
 git clone https://github.com/svr4/politica-abierta.git
 cd politica-abierta
+npm install
 make init
 npm start
 ```
