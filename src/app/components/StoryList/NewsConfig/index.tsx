@@ -3,9 +3,11 @@ import { useAppDispatch, useAppSelector } from "../../../lib/hooks";
 import { selectNews, updateConfig } from "../../../lib/slices/appConfig";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleXmark } from "@fortawesome/free-regular-svg-icons";
+import Typography from '@mui/material/Typography';
 
-// import "./NewsConfig.css";
 import { EventScraperData, NewsScraperData, ScrapingJobState, SourceType } from "../../../lib/models";
+import AppButton from "../../Misc/AppButton";
+import LiveRegion from "../../Misc/LiveRegion";
 
 export default function NewsConfig() {
 
@@ -253,7 +255,16 @@ export default function NewsConfig() {
         <>
             <div style={{display: "flex", flexDirection: "row", justifyContent: "center", width: "100vw"}}>
                 <div>
-                    {loadStories? <><span style={{display: "flex"}}><div className='spinner'></div>&nbsp;Cargando Noticias</span></> : <div className="button" onClick={async () => await scrapeNews()}><FontAwesomeIcon icon="bolt" />&nbsp;Cargar Noticias Ahora</div>}
+                    {loadStories ? (
+                        <>
+                            <LiveRegion message="Cargando noticias…" />
+                            <span style={{display: "flex"}}>Cargando Noticias</span>
+                        </>
+                    ) : (
+                        <AppButton onClick={() => void scrapeNews()} startIcon={<FontAwesomeIcon icon="bolt" aria-hidden />}>
+                            Cargar Noticias Ahora
+                        </AppButton>
+                    )}
                 </div>
             </div>
             <div className='legislation-settings-header-container'>
@@ -284,12 +295,10 @@ export default function NewsConfig() {
                             <label htmlFor="notifyOnNew">Recibirás notificaciones sobre noticias nuevas filtradas.</label>
                         </div>
                         <div className="legislation-settings-items-container">
-                            <div>
-                                <label>Establezca los filtros aplicables a las noticias</label>
-                            </div>
-                            <div className="sm-form-button" onClick={(e) => addFilter(e)}>
+                            <Typography component="p">Establezca los filtros aplicables a las noticias</Typography>
+                            <AppButton onClick={(e) => addFilter(e)}>
                                 A&ntilde;adir Filtro
-                            </div>
+                            </AppButton>
                         </div>
                         <div className="legislation-settings-items-container">
                             <input type="text" onChange={(e) =>  {

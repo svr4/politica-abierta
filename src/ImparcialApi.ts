@@ -1,8 +1,9 @@
 import { BrowserWindow, session } from 'electron';
 import { ImparcialDb } from "./db";
-import { Notification, ArticleSummary, CommitteeConfig, Configuration, Legislation, LegislationFilter, LegislationList,
+import { Notification, ArticleSummary, CommitteeConfig, Configuration, ConfigurationOptions, Legislation, LegislationFilter, LegislationList,
     LegislationSummary, NewsConfig, RecentLegislationList, Story, StoryList, ApiResult, SubscribedLegislationList, SourceType, 
     LegislationEvent} from "./app/lib/models";
+import { getCommitteeIdsForChamber, Chamber } from "./app/lib/legislationMeta";
 import * as cheerio from 'cheerio';
 import { fromBuffer } from 'pdf2pic';
 import WordExtractor from 'word-extractor';
@@ -99,14 +100,16 @@ export default class ImparcialApi {
                 limit = limit || 10;
                 const offset = (page - 1) * limit;
                 const filterCommittee = filter?.committee || -1;
-                const searchText = filter?.searchText;
+                const searchText = filter?.searchText || '';
+                const chamberFilter = filter?.chamber || '';
+                const statusFilter = filter?.status || '';
 
                 // get the config
                 let legislation: any = [];
                 let totalCount;
                 let totalPages = 0;
                     
-                let config = await db.get("SELECT * FROM Configuration WHERE ConfigId = ?;", [1]);
+                let config = await db.get("SELECT ConfigId, Config FROM Configuration WHERE ConfigId = ?;", [1]);
 
                 if(!config) {
                 // No legislation configuration, return empty and UI will let them know they need to configure.
@@ -117,7 +120,7 @@ export default class ImparcialApi {
                 else {
                     config.Config = JSON.parse(config.Config);
 
-                    let committees = []
+                    let committees: number[] = [];
 
                     if(filterCommittee == -1) {
                         committees = config.Config.Committees.map((e: any) => e.CommitteeId);
@@ -126,17 +129,53 @@ export default class ImparcialApi {
                         committees.push(filterCommittee);
                     }
 
-                    totalCount = await db.get('SELECT COUNT(*) as count FROM Legislation WHERE Committe in (SELECT value from json_each(?));', [JSON.stringify(committees)]);
-                    
-                    legislation = await db.all(`SELECT l.*, IFNULL(sub.SubProjectId, 0) as IsSubscribed FROM Legislation l LEFT JOIN SubscribedProject sub ON l.LegislationId = sub.LegislationIdFk WHERE Committe in (SELECT value from json_each(?)) ORDER BY SUBSTR(FiledDate, 7, 4) || '-' || SUBSTR(FiledDate, 1, 2) || '-' || SUBSTR(FiledDate, 4, 2) DESC LIMIT ? OFFSET ?;`, [JSON.stringify(committees), limit, offset]);
-
-                    for(let i=0; i < legislation.length; i++) {
-                        const events = await db.all('SELECT LegEventId, Title, Description, DocType, Uri, DocSummary, LENGTH(IFNULL(Document,\'\')) as HasDocument FROM LegislationEvent WHERE LegislationIdFk = ? ORDER BY CreatedDate desc;', legislation[i].LegislationId);
-                        legislation[i].Events = events;
+                    if (chamberFilter === 'Camara' || chamberFilter === 'Senado' || chamberFilter === 'Conjunta') {
+                        const chamberIds = getCommitteeIdsForChamber(chamberFilter as Chamber);
+                        const chamberSet = new Set(chamberIds);
+                        committees = committees.filter((id: number) => chamberSet.has(id));
                     }
 
-                    // Calculate pagination info
-                    totalPages = Math.ceil(totalCount.count / limit);
+                    if (committees.length === 0) {
+                        totalCount = { count: 0 };
+                        legislation = [];
+                        totalPages = 0;
+                    } else {
+                        const whereParts = ['Committe in (SELECT value from json_each(?))'];
+                        const params: any[] = [JSON.stringify(committees)];
+
+                        if (searchText.trim() !== '') {
+                            const trimmed = searchText.trim();
+                            // Number: prefix match (index-friendly). Title: substring required by "buscar por número o título".
+                            whereParts.push('(Title LIKE ? OR CAST(Number AS TEXT) LIKE ?)');
+                            params.push(`%${trimmed}%`, `${trimmed}%`);
+                        }
+
+                        if (statusFilter === 'aprobado') {
+                            whereParts.push("IFNULL(LastEvent,'') LIKE '%aprob%'");
+                        } else if (statusFilter === 'enComision') {
+                            whereParts.push("(IFNULL(LastEvent,'') LIKE '%comisi%' OR IFNULL(LastEvent,'') LIKE '%vista%')");
+                        } else if (statusFilter === 'radicado') {
+                            whereParts.push("(IFNULL(LastEvent,'') LIKE '%radic%' OR IFNULL(LastEvent,'') LIKE '%present%')");
+                        } else if (statusFilter === 'rechazado') {
+                            whereParts.push("(IFNULL(LastEvent,'') LIKE '%rechaz%' OR IFNULL(LastEvent,'') LIKE '%derrot%')");
+                        } else if (statusFilter === 'ley') {
+                            whereParts.push("(IFNULL(LastEvent,'') LIKE '%firmad%' OR IFNULL(LastEvent,'') LIKE '%convertid%' OR IFNULL(LastEvent,'') LIKE '%sancionad%')");
+                        }
+
+                        const whereSql = whereParts.join(' AND ');
+
+                        totalCount = await db.get(
+                            `SELECT COUNT(*) as count FROM Legislation WHERE ${whereSql};`,
+                            params
+                        );
+
+                        legislation = await db.all(
+                            `SELECT l.LegislationId, l.Number, l.FiledDate, l.Title, l.Author, l.CoAuthor, l.Uri, l.Committe, l.AdministrationId, l.LastEvent, l.ScrapedDate, l.Hash, IFNULL(sub.SubProjectId, 0) as IsSubscribed FROM Legislation l LEFT JOIN SubscribedProject sub ON l.LegislationId = sub.LegislationIdFk WHERE ${whereSql} ORDER BY SUBSTR(FiledDate, 7, 4) || '-' || SUBSTR(FiledDate, 1, 2) || '-' || SUBSTR(FiledDate, 4, 2) DESC LIMIT ? OFFSET ?;`,
+                            [...params, limit, offset]
+                        );
+
+                        totalPages = Math.ceil(totalCount.count / limit);
+                    }
                 }
                 
                 resolve({
@@ -150,7 +189,9 @@ export default class ImparcialApi {
                         },
                         Filter: {
                             searchText,
-                            committee: filterCommittee
+                            committee: filterCommittee,
+                            chamber: chamberFilter,
+                            status: statusFilter,
                         }
                     },
                     Error: null
@@ -845,7 +886,6 @@ export default class ImparcialApi {
 
                 if(!config) {
                     console.error('Config not found.');
-                    // return res.status(404).json({ error: 'Config not found.' });
                     resolve({
                         Data: {
                             ConfigId: -1,
@@ -856,6 +896,7 @@ export default class ImparcialApi {
                         },
                         Error: null
                     });
+                    return;
                 }
 
                 config.Config = JSON.parse(config.Config);
@@ -980,6 +1021,46 @@ export default class ImparcialApi {
                 db?.close();
             }
         })
+    }
+
+    public static updateAlertRules(rules: { topics: string[], legislator: string, frequency: string }): Promise<ApiResult<Configuration|null>> {
+        return new Promise(async (resolve) => {
+            const db = new ImparcialDb();
+            try {
+                let config = await db.get("SELECT ConfigId, Config FROM Configuration WHERE ConfigId = ?;", [1]);
+                if (!config) {
+                    const _config: ConfigurationOptions = {
+                        Committees: [] as CommitteeConfig[],
+                        News: [] as NewsConfig[],
+                        AlertRules: rules,
+                    };
+                    await db.run("INSERT INTO Configuration (Config) VALUES (?);", [JSON.stringify(_config)]);
+                    config = await db.get("SELECT ConfigId, Config FROM Configuration WHERE ConfigId = ?;", [db.getLastId()]);
+                    config.Config = JSON.parse(config.Config);
+                    resolve({ Data: config, Error: null });
+                    return;
+                }
+                config.Config = JSON.parse(config.Config);
+                config.Config.AlertRules = rules;
+                const topicsAndLegislator = [
+                    ...rules.topics,
+                    ...(rules.legislator.trim() ? [rules.legislator.trim()] : []),
+                ];
+                if (Array.isArray(config.Config.News)) {
+                    config.Config.News = config.Config.News.map((n: NewsConfig) => ({
+                        ...n,
+                        NotificationFilters: topicsAndLegislator.length > 0 ? topicsAndLegislator : n.NotificationFilters,
+                    }));
+                }
+                await db.run("UPDATE Configuration SET Config = ? WHERE ConfigId = ?;", [JSON.stringify(config.Config), config.ConfigId]);
+                resolve({ Data: config, Error: null });
+            } catch (error) {
+                console.error('Error updating alert rules:', error);
+                resolve({ Data: null, Error: `Error updating alert rules: ${error}` });
+            } finally {
+                db.close();
+            }
+        });
     }
 
     public static updateSubscribedProjects(legislationId: number): Promise<ApiResult<boolean|null>> {

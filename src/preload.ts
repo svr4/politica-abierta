@@ -35,6 +35,7 @@ contextBridge.exposeInMainWorld('imparcialAPI', {
     getConfig: () => ipcRenderer.invoke('get-config'),
     updateCommitteeConfig: (committees: CommitteeConfig[]) => ipcRenderer.invoke('update-committee-config', [committees]),
     updateNewsConfig: (news: NewsConfig[]) => ipcRenderer.invoke('update-news-config', [news]),
+    updateAlertRules: (rules: { topics: string[], legislator: string, frequency: string }) => ipcRenderer.invoke('update-alert-rules', [rules]),
     updateSubscribedProjects: (legislationId: number) => ipcRenderer.invoke('update-subscribed-projects', [legislationId]),
     getNotifications: () => ipcRenderer.invoke('get-notifications'),
     markNotificationAsRead: (notifId: number) => ipcRenderer.invoke('mark-notifications-as-read', [notifId]),

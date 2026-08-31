@@ -1,5 +1,7 @@
-import {useEffect, useState, ReactNode} from "react";
+import { useEffect, useState, ReactNode } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import LiveRegion from '../Misc/LiveRegion';
+import Box from '@mui/material/Box';
 import { useAppSelector, useAppDispatch } from "../../lib/hooks";
 import { updateLegislation, updatePagination, updateIsFiltering,
     updateRecentLegislation, updateLegislationSource } from "../../lib/slices/legislationList";
@@ -151,14 +153,11 @@ export default function LegislationList() {
             <LegislationConfig />
             <LegislationFilter />
             {
-                isFiltering?
-                    <div className="more-container">
-                        <div className="more-item">
-                            <div className="more-button">
-                                <FontAwesomeIcon icon="bolt" className="more-button-icon" id="more-button-icon" />
-                            </div>
-                        </div>
-                    </div>
+                isFiltering ?
+                    <Box sx={{ display: 'flex', justifyContent: 'center', py: 2 }}>
+                        <LiveRegion message="Cargando legislación…" />
+                        <span>Cargando…</span>
+                    </Box>
                     : <div className="legislation-container">
                         {
                             legislationSourceType == LegislationSourceType.Legislation? renderLegislation() : renderRecentLegislation()

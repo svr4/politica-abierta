@@ -1,238 +1,292 @@
-import { useEffect, useState } from 'react';
-import { useParams } from 'react-router';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBell as farBell } from "@fortawesome/free-regular-svg-icons";
-import { useAppSelector, useAppDispatch } from "../../../lib/hooks";
-import { faBell as fasBell, faFileWord, faFilePdf } from "@fortawesome/free-solid-svg-icons";
+import { useEffect, useMemo, useState } from 'react';
+import { Link as RouterLink, useParams } from 'react-router';
+import CircularProgress from '@mui/material/CircularProgress';
+import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNoneOutlined';
+import NotificationsActiveOutlinedIcon from '@mui/icons-material/NotificationsActiveOutlined';
 
-import NavBar from "../../NavBar";
-import { Legislation, RecentLegislation } from '../../../lib/models';
-import data from '../../../lib/data';
+import StatusBadge from '../../StatusBadge';
+import AiBadge from '../../AiBadge';
+import EventTimeline from '../../EventTimeline';
+import FeedCard from '../../FeedCard';
+import AppButton from '../../Misc/AppButton';
+import LiveRegion from '../../Misc/LiveRegion';
+import { Legislation, Story, SourceType } from '../../../lib/models';
+import {
+    formatBillNo,
+    formatLongDate,
+    getChamberFromCommittee,
+    getChamberLabel,
+} from '../../../lib/legislationMeta';
+import { getRelativeTime } from '../../../lib/relativeTime';
+import { ROUTE_TITLES, setDocumentTitle } from '../../../lib/pageTitles';
 
-import '../LegislationList.css';
+const TABS = ['Resumen', 'Texto completo', 'Historial', 'Noticias relacionadas'] as const;
 
-interface LegislationDetailProps
-{
-    showNav?: boolean,
-    hash?: string,
-    legislationId?: number
+interface LegislationDetailProps {
+    hash?: string;
+    legislationId?: number;
 }
 
-export default function LegislationDetail({showNav = true, hash, legislationId}: LegislationDetailProps) {
+export default function LegislationDetail({ hash, legislationId }: LegislationDetailProps) {
+    const params = useParams();
+    const [legislation, setLegislation] = useState<Legislation | undefined>();
+    const [loading, setLoading] = useState(true);
+    const [tab, setTab] = useState(0);
+    const [following, setFollowing] = useState(false);
+    const [related, setRelated] = useState<Story[]>([]);
 
-    let params = useParams();
-    const dispatch = useAppDispatch();
-
-    const [legislation, setLegislation] = useState<Legislation|undefined>();
-    const [isSummarizing, setIsSummarizing] = useState(false);
-    const [showSummary, setShowSummary] = useState<boolean[]>([]);
-    const [isLoading, setIsLoading] = useState(false);
-    const [isAddingToWatchlist, setIsAddingToWatchList] = useState(false);
-    const [showEvents, setShowEvents] = useState(false);
+    useEffect(() => {
+        setDocumentTitle(ROUTE_TITLES.legislationDetail);
+    }, []);
 
     useEffect(() => {
         (async () => {
-            if(legislationId && legislationId > 0) {
-                const legislationResult = await window.imparcialAPI.getLegislationById(legislationId);
-                if(!legislationResult.Error) {
-                    const _leg = legislationResult.Data;
-                    if(_leg) {
-                        const _showSummary = _leg.Events.map(() => false);
-                        setLegislation(_leg);
-                        setShowSummary(_showSummary);
-                        setIsLoading(false);
-                    }
+            setLoading(true);
+            let loaded: Legislation | undefined;
+            if (legislationId && legislationId > 0) {
+                const result = await window.imparcialAPI.getLegislationById(legislationId);
+                if (!result.Error && result.Data) {
+                    loaded = result.Data;
+                }
+            } else {
+                const _hash = hash && hash !== '' ? hash : (params.hash as string);
+                const result = await window.imparcialAPI.getLegislationByHash(_hash);
+                if (!result.Error && result.Data) {
+                    loaded = result.Data;
                 }
             }
-            else {
-                let _hash = "";
-                if(hash && hash != "") {
-                    _hash = hash
-                }
-                else {
-                    _hash = params.hash as string;
-                }
-                const legislationResult = await window.imparcialAPI.getLegislationByHash(_hash);
-                if(!legislationResult.Error) {
-                    const _leg = legislationResult.Data;
-                    if(_leg) {
-                        const _showSummary = _leg.Events.map(() => false);
-                        setLegislation(_leg);
-                        setShowSummary(_showSummary);
-                        setIsLoading(false);
-                    }
-                }
+            if (loaded) {
+                setLegislation(loaded);
+                setFollowing(Boolean(loaded.IsSubscribed));
             }
-        })()
-        setIsLoading(true);
-    }, []);
+            setLoading(false);
+        })();
+    }, [hash, legislationId, params.hash]);
 
-    async function setProjectWatchList(projectId: number = -1) {
-        setIsAddingToWatchList(true);
-        if(projectId > 0) {
-            await window.imparcialAPI.updateSubscribedProjects(projectId);
+    useEffect(() => {
+        if (!legislation) {
+            return;
         }
-        setIsAddingToWatchList(false);
-    }
-
-    async function summarizeLegislation(docIndex: number) {
-        setIsSummarizing(true);
-        if(legislation && (legislation.Events && legislation.Events.length > 0)) {
-            let doc = legislation.Events[docIndex];
-            if(doc) {
-                if(doc.DocSummary && doc.DocSummary != "") {
-                    let _showSummary = [...showSummary];
-                    _showSummary[docIndex] = true;
-                    setShowSummary(_showSummary);
-                }
-                else {
-                    const summaryResult = await window.imparcialAPI.summarizeLegislationDoc(doc.LegEventId);
-                    if(!summaryResult.Error) {
-                        const summary = summaryResult.Data;
-                        if(summary) {
-                            let _legislation = Object.assign({}, legislation);
-                            _legislation.Events[docIndex].DocSummary = summary.Body;
-                            let _showSummary = [...showSummary];
-                            _showSummary[docIndex] = true;
-                            setLegislation(_legislation);
-                            setShowSummary(_showSummary);
+        (async () => {
+            const tokens = [
+                String(legislation.Number),
+                ...legislation.Title.split(/\s+/).filter((t) => t.length > 5).slice(0, 3),
+            ].map((t) => t.toLowerCase());
+            const stories: Story[] = [];
+            for (const source of [SourceType.ENDI, SourceType.Vocero, SourceType.Noticel]) {
+                const result = await window.imparcialAPI.getStories(1, 20, source);
+                if (!result.Error && result.Data?.Stories) {
+                    for (const s of result.Data.Stories) {
+                        const hay = `${s.Title} ${s.Description}`.toLowerCase();
+                        if (tokens.some((t) => hay.includes(t))) {
+                            stories.push(s);
                         }
                     }
                 }
             }
+            setRelated(stories.slice(0, 10));
+        })();
+    }, [legislation]);
+
+    const chamber = useMemo(
+        () => (legislation ? getChamberFromCommittee(legislation.Committe) : 'Desconocida'),
+        [legislation],
+    );
+    const billNo = legislation ? formatBillNo(chamber, legislation.Number) : '';
+
+    useEffect(() => {
+        if (billNo) {
+            setDocumentTitle(billNo);
         }
-        setIsSummarizing(false);
+    }, [billNo]);
+
+    const summaryText = useMemo(() => {
+        if (!legislation) {
+            return '';
+        }
+        const fromEvents = legislation.Events?.find((e) => e.DocSummary)?.DocSummary;
+        const fromDocs = legislation.Docs?.find((d) => d.DocSummary)?.DocSummary;
+        return fromEvents || fromDocs || '';
+    }, [legislation]);
+
+    const fullText = useMemo(() => {
+        if (!legislation) {
+            return '';
+        }
+        const docs = legislation.Docs || [];
+        if (docs.length === 0 && legislation.Events?.length) {
+            return legislation.Events.map((e) => e.Description).filter(Boolean).join('\n\n');
+        }
+        return docs.map((d) => d.Description).filter(Boolean).join('\n\n');
+    }, [legislation]);
+
+    const timelineEvents = useMemo(
+        () => (legislation?.Events || []).map((e) => ({
+            title: e.Title,
+            description: e.Description,
+        })),
+        [legislation],
+    );
+
+    async function toggleFollow() {
+        if (!legislation) {
+            return;
+        }
+        setFollowing((v) => !v);
+        await window.imparcialAPI.updateSubscribedProjects(legislation.LegislationId);
     }
 
-    async function summarizeRecentLegislation(legislationId: number, docIndex: number) {
-        setIsSummarizing(true);
-        if(legislation && (legislation.Events && legislation.Events.length > 0)) {
-            let doc = legislation.Events[docIndex];
-            if(doc) {
-                if(doc.DocSummary && doc.DocSummary != "") {
-                    let _showSummary = [...showSummary];
-                    _showSummary[docIndex] = true;
-                    setShowSummary(_showSummary);
-                }
-                else {
-                    const summaryResult = await window.imparcialAPI.summarizeRecentLegislationDoc(legislationId);
-                    if(!summaryResult.Error) {
-                        const summary = summaryResult.Data;
-                        if(summary) {
-                            let _legislation = Object.assign({}, legislation);
-                            _legislation.Events[docIndex].DocSummary = summary.Body;
-                            let _showSummary = [...showSummary];
-                            _showSummary[docIndex] = true;
-                            setLegislation(_legislation);
-                            setShowSummary(_showSummary);
-                        }
-                    }
-                }
-            }
-        }
-        setIsSummarizing(false);
+    if (loading) {
+        return (
+            <div style={{ display: 'flex', justifyContent: 'center', padding: '48px 0' }}>
+                <CircularProgress aria-hidden />
+                <LiveRegion message="Cargando detalle…" />
+            </div>
+        );
     }
 
-    function decodeSummary(summary: string) {
-        // Like Link from The Matrix: Reloaded said: "It's the Hammer!".
-        const text = JSON.parse(`{"parsed": ${summary}}`);
-        return text.parsed;
+    if (!legislation) {
+        return <p className="page-subtitle">Proyecto no encontrado.</p>;
     }
 
     return (
-        <>
-            {
-                showNav? <NavBar /> : <></>
-            }
-            <br />
-            <div className="legislation-container">
-                <div className="legislation-item" key={legislation?.LegislationId}>
-                    <div className="legislation-item-title">
-                        <div>
-                            {isLoading? <div className='skeleton-text-line short'></div> : <label>{legislation?.Number}</label>}
-                        </div>
+        <div>
+            <nav className="breadcrumb" aria-label="Miga de pan">
+                <RouterLink to="/legislacion">Legislación</RouterLink>
+                <span aria-hidden>›</span>
+                <span className="current">{billNo}</span>
+            </nav>
+
+            <div className="card-row-top" style={{ alignItems: 'flex-start', marginBottom: 16 }}>
+                <div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 6 }}>
+                        <h1 style={{ fontSize: 19, fontWeight: 600, margin: 0 }}>{billNo}</h1>
+                        <StatusBadge raw={legislation.LastEvent} />
                     </div>
-                    <div className="legislation-controls-container">
-                        {
-                            legislation?.Committe?
-                            <>
-                                {isLoading? <div className='skeleton-text-line short'></div>:
-                                    <div onClick={async () => await setProjectWatchList(legislation?.LegislationId)} className="button">
-                                        {
-                                            isAddingToWatchlist? <div className='spinner'></div> :
-                                            legislation.IsSubscribed? <span><FontAwesomeIcon icon={fasBell} />&nbsp; Remover Notificaciones</span> :
-                                            <span><FontAwesomeIcon icon={farBell} />&nbsp; Notificame sobre Eventos</span>
-                                        }
-                                    </div>
-                                }
-                            </>: <></>
-                        }
-                        {isLoading? <div className='skeleton-text-line short'></div> : <a href={legislation?.Uri} target="_blank" className="button">Ver Proyecto</a>}
-                    </div>
-                    <div className="legislation-data-container">
-                        <div className="legislation-data-item">
-                            {isLoading? <div className='skeleton-text-line short'></div> : <label><strong>Radicado:</strong> {legislation?.FiledDate}</label>}
-                            <br />
-                            {isLoading? <div className='skeleton-text-line'></div> : legislation?.Committe? <><label><strong>Comisi&oacute;n:</strong> {(data.comisions.find((elem) => elem.id == legislation?.Committe))?.name}</label><br /></> : <></>}
-                            {isLoading? <div className='skeleton-text-line medium'></div> : <>
-                                <label><strong>Autor(es):</strong> {legislation?.Author}</label>
-                                {legislation?.CoAuthor != ""? <><br /><label><strong>Co-Autor(es):</strong> {legislation?.CoAuthor}</label></> : <></>}
-                            </>}
-                            <br />
-                            {isLoading? <div className='skeleton-block'></div> : <>
-                                <p>{legislation?.Title}</p>
-                                <label><strong>&Uacute;ltimo Evento:</strong> <span id="lastEvent">{legislation?.LastEvent}</span></label>
-                            </>}
-                        </div>
-                    </div>
-                    <br />
-                    {
-                        legislation && legislation.Events.length > 0?
-                        <div className="legislation-doc-container">
-                            <label>Eventos:</label>
-                            &nbsp;
-                            <a onClick={() => setShowEvents(!showEvents)} className="button">Mostrar Eventos</a>
-                            <br />
-                            <br />
-                            {
-                                showEvents && legislation?.Events.length > 0?
-                                <div className="legislation-doc-item-container">
-                                {
-                                    legislation?.Events.map((doc, i) => {
-                                        return (
-                                            <div className="legislation-doc-item-row-container" key={`${legislation.LegislationId}_${doc.LegEventId}`}>
-                                                <div className="legislation-doc-item-row">
-                                                    <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between", columnGap: 10}}>
-                                                        <div className="legislation-doc-item legislation-doc-title ">{doc.Title}</div>
-                                                        <div className="legislation-doc-item-row-controls">
-                                                            {
-                                                                doc.HasDocument?
-                                                                <>
-                                                                    <a href={doc.Uri} target="_blank" className="button legislation-doc-item-action">Ver Documento&nbsp;
-                                                                        <span>{!doc.DocType? <></> : doc.DocType.includes("doc")? <FontAwesomeIcon icon={faFileWord} className='doc' /> : <FontAwesomeIcon className='pdf' icon={faFilePdf} />}</span></a>
-                                                                    <div onClick={async () => legislation.Committe == -1? await summarizeRecentLegislation(legislation.LegislationId, i) : await summarizeLegislation(i)}
-                                                                    className="button legislation-doc-item-action">{isSummarizing? <div className='spinner'></div> : <>Resumir con I.A. &#129302;</>}</div>
-                                                                </>
-                                                                : <></>
-                                                            }
-                                                        </div>
-                                                    </div>
-                                                    {doc.Description && doc.Description != ""? <div className="legislation-doc-desc">{doc.Description}</div> : <></>}
-                                                </div>
-                                                {
-                                                    showSummary[i]? <><div className='story-ai-summary-container'><label>Resumen hecho por I.A.:</label><br /><br /><div>{decodeSummary(doc.DocSummary)}</div></div></>
-                                                    : <></>
-                                                }
-                                            </div>
-                                        )
-                                    })
-                                }
-                                </div>: <></>
-                            }
-                        </div>: <><br /></>
-                    }
+                    <p
+                        style={{
+                            fontSize: 14,
+                            color: 'var(--pa-text-secondary)',
+                            margin: 0,
+                            maxWidth: 460,
+                        }}
+                    >
+                        {legislation.Title}
+                    </p>
                 </div>
+                <AppButton
+                    variant="contained"
+                    color="primary"
+                    className="btn btn-primary"
+                    startIcon={following ? <NotificationsActiveOutlinedIcon /> : <NotificationsNoneOutlinedIcon />}
+                    onClick={toggleFollow}
+                    aria-pressed={following}
+                >
+                    Seguir
+                </AppButton>
             </div>
-        </>
-    )
+
+            <div
+                style={{
+                    display: 'flex',
+                    gap: 20,
+                    fontSize: 13,
+                    color: 'var(--pa-text-secondary)',
+                    padding: '12px 0',
+                    borderTop: '1px solid var(--pa-border)',
+                    borderBottom: '1px solid var(--pa-border)',
+                    marginBottom: 20,
+                    flexWrap: 'wrap',
+                }}
+            >
+                <span>Autor: {legislation.Author || '—'}</span>
+                <span>Cámara: {getChamberLabel(chamber)}</span>
+                <span>Fecha: {formatLongDate(legislation.FiledDate)}</span>
+            </div>
+
+            <div className="tabs" role="tablist" aria-label="Secciones del proyecto">
+                {TABS.map((label, index) => (
+                    <button
+                        key={label}
+                        type="button"
+                        role="tab"
+                        id={`bill-tab-${index}`}
+                        aria-selected={tab === index}
+                        aria-controls={`bill-panel-${index}`}
+                        className={`tab${tab === index ? ' active' : ''}`}
+                        onClick={() => setTab(index)}
+                    >
+                        {label}
+                    </button>
+                ))}
+            </div>
+
+            {tab === 0 && (
+                <div role="tabpanel" id="bill-panel-0" aria-labelledby="bill-tab-0">
+                    <div className="card" style={{ marginBottom: 20 }}>
+                        <div style={{ marginBottom: 10 }}>
+                            <AiBadge />
+                        </div>
+                        <p style={{ fontSize: 14, lineHeight: 1.65, margin: 0 }}>
+                            {summaryText || 'Aún no hay un resumen de I.A. para este proyecto.'}
+                        </p>
+                    </div>
+                    <p
+                        style={{
+                            fontSize: 13,
+                            fontWeight: 500,
+                            color: 'var(--pa-text-secondary)',
+                            marginBottom: 12,
+                        }}
+                    >
+                        Historial de acciones
+                    </p>
+                    <EventTimeline events={timelineEvents} />
+                </div>
+            )}
+
+            {tab === 1 && (
+                <div role="tabpanel" id="bill-panel-1" aria-labelledby="bill-tab-1">
+                    <p
+                        style={{
+                            whiteSpace: 'pre-wrap',
+                            fontSize: 14,
+                            lineHeight: 1.65,
+                            margin: 0,
+                            color: fullText ? 'var(--pa-text-primary)' : 'var(--pa-text-secondary)',
+                        }}
+                    >
+                        {fullText || 'No hay texto completo disponible.'}
+                    </p>
+                </div>
+            )}
+
+            {tab === 2 && (
+                <div role="tabpanel" id="bill-panel-2" aria-labelledby="bill-tab-2">
+                    <EventTimeline dense events={timelineEvents} />
+                </div>
+            )}
+
+            {tab === 3 && (
+                <div role="tabpanel" id="bill-panel-3" aria-labelledby="bill-tab-3">
+                    {related.length === 0 ? (
+                        <p className="page-subtitle" style={{ marginBottom: 0 }}>No hay noticias relacionadas.</p>
+                    ) : (
+                        related.map((s) => (
+                            <FeedCard
+                                key={s.Hash}
+                                statusKind="noticia"
+                                statusLabel="Noticia"
+                                relativeTime={getRelativeTime(s.ScrapedDate)}
+                                headline={s.Title}
+                                source={s.Source}
+                                showAiBadge={Boolean(s.SummaryText)}
+                                onClick={() => { window.location.hash = `#/noticia/${s.Hash}`; }}
+                            />
+                        ))
+                    )}
+                </div>
+            )}
+        </div>
+    );
 }

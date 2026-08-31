@@ -186,9 +186,16 @@ export interface NewsConfig {
     NotificationFilters: string[]
 }
 
+export interface AlertRulePreferences {
+    topics: string[],
+    legislator: string,
+    frequency: string,
+}
+
 export interface ConfigurationOptions {
     Committees: CommitteeConfig[],
-    News: NewsConfig[]
+    News: NewsConfig[],
+    AlertRules?: AlertRulePreferences,
 }
 
 export interface Configuration {
@@ -198,7 +205,11 @@ export interface Configuration {
 
 export interface LegislationFilter {
     searchText: string,
-    committee: number
+    committee: number,
+    /** Cámara | Senado | Conjunta | empty for all */
+    chamber?: string,
+    /** aprobado | enComision | radicado | rechazado | empty for all */
+    status?: string,
 }
 
 export interface LegislationConfig {
@@ -281,6 +292,7 @@ export interface ImparcialApi {
     getConfig: () => Promise<ApiResult<Configuration|null>>,
     updateCommitteeConfig: (committees: CommitteeConfig[]) => Promise<ApiResult<Configuration|null>>,
     updateNewsConfig: (news: NewsConfig[]) => Promise<ApiResult<Configuration|null>>,
+    updateAlertRules: (rules: { topics: string[], legislator: string, frequency: string }) => Promise<ApiResult<Configuration|null>>,
     updateSubscribedProjects: (legislationId: number) => Promise<ApiResult<boolean|null>>,
     getNotifications: () => Promise<ApiResult<Notification[]|null>>,
     markNotificationAsRead: (notifId: number) => Promise<ApiResult<boolean|null>>,

@@ -5,8 +5,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleXmark } from "@fortawesome/free-regular-svg-icons";
 import data from "../../../lib/data";
 
-import "./LegislationConfig.css";
 import { ScrapingJobState } from "../../../lib/models";
+import AppButton from "../../Misc/AppButton";
+import LiveRegion from "../../Misc/LiveRegion";
+import "./LegislationConfig.css";
 
 export default function LegislationConfig() {
 
@@ -243,7 +245,16 @@ export default function LegislationConfig() {
         <>
             <div style={{display: "flex", flexDirection: "row", justifyContent: "center", width: "100vw"}}>
                 <div>
-                    {isFetchingLaws? <><span style={{display: "flex"}}><div className='spinner'></div>&nbsp;Cargando Legislaci&oacute;n</span></> : <div className="button" onClick={async () => await scrapeLegislation()}><FontAwesomeIcon icon="bolt" />&nbsp;Cargar Legislaci&oacute;n</div>}
+                    {isFetchingLaws ? (
+                        <>
+                            <LiveRegion message="Cargando legislación…" />
+                            <span style={{ display: 'flex' }}>Cargando Legislación</span>
+                        </>
+                    ) : (
+                        <AppButton onClick={() => void scrapeLegislation()} startIcon={<FontAwesomeIcon icon="bolt" aria-hidden />}>
+                            Cargar Legislación
+                        </AppButton>
+                    )}
                 </div>
             </div>
             <div className='legislation-settings-header-container'>

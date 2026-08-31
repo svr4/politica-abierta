@@ -1,44 +1,44 @@
-import { useState } from "react";
+import { useState } from 'react';
+import Typography from '@mui/material/Typography';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFileWord, faFilePdf } from "@fortawesome/free-solid-svg-icons";
+import { faFileWord, faFilePdf } from '@fortawesome/free-solid-svg-icons';
 
-import { useAppDispatch } from "../../../lib/hooks";
-import { updateRecentLegDocSummary } from "../../../lib/slices/legislationList";
-import { RecentLegislation } from "../../../lib/models";
+import { useAppDispatch } from '../../../lib/hooks';
+import { updateRecentLegDocSummary } from '../../../lib/slices/legislationList';
+import { RecentLegislation } from '../../../lib/models';
+import AppButton from '../../Misc/AppButton';
+import SummarizeLabel from '../../../lib/SummarizeLabel';
 
 interface RecentLegislationItemProps {
-    legislationIndex: number,
-    legislation: RecentLegislation
+    legislationIndex: number;
+    legislation: RecentLegislation;
 }
 
-
-export default function RecentLegislationItem({legislationIndex, legislation}: RecentLegislationItemProps) {
-
+export default function RecentLegislationItem({ legislationIndex, legislation }: RecentLegislationItemProps) {
     const [showSummary, setShowSummary] = useState<boolean>(false);
-    // const isSummarizing = useAppSelector((state) => state.legislation.IsSummarizing);
     const [isSummarizing, setIsSummarizing] = useState<boolean>(false);
 
     const dispatch = useAppDispatch();
 
     function decodeSummary(summary: string) {
-        // Like Link from The Matrix: Reloaded said: "It's the Hammer!".
         const text = JSON.parse(`{"parsed": ${summary}}`);
         return text.parsed;
     }
 
     async function summarizeRecentLegislation() {
         setIsSummarizing(true);
-        
-        if(legislation && legislation.HasDocument) {
-            if(legislation.DocSummary && legislation.DocSummary != "") {
+
+        if (legislation && legislation.HasDocument) {
+            if (legislation.DocSummary && legislation.DocSummary !== '') {
                 setShowSummary(true);
-            }
-            else {
+            } else {
                 const summaryResult = await window.imparcialAPI.summarizeRecentLegislationDoc(legislation.LegislationId);
-                if(!summaryResult.Error) {
+                if (!summaryResult.Error) {
                     const summary = summaryResult.Data;
-                    if(summary) {
-                        dispatch(updateRecentLegDocSummary({Id: legislationIndex, Summary: summary.Body}))
+                    if (summary) {
+                        dispatch(updateRecentLegDocSummary({ Id: legislationIndex, Summary: summary.Body }));
                         setShowSummary(true);
                     }
                 }
@@ -48,54 +48,80 @@ export default function RecentLegislationItem({legislationIndex, legislation}: R
     }
 
     return (
-        <div className="legislation-item" key={`recent_legislation_${legislation.LegislationId}_${legislation.Hash}`}>
+        <Card
+            component="article"
+            className="legislation-item"
+            key={`recent_legislation_${legislation.LegislationId}_${legislation.Hash}`}
+            sx={{ width: '100%', maxWidth: 800, mb: 1.5, boxShadow: '0px 1px 7px gray' }}
+        >
+            <CardContent>
             <div className="legislation-item-title">
-                <div>
-                    <label>{legislation.Number}</label>
-                </div>
+                <Typography component="h2" variant="h6">{legislation.Number}</Typography>
             </div>
             <div className="legislation-controls-container">
-                <a href={legislation.Uri} target="_blank" className="button">Ver Proyecto</a>
-                {/* <div className="button" title="Notificame de Cambios"><FontAwesomeIcon icon={farBell} /></div> */}
+                <AppButton component="a" href={legislation.Uri} target="_blank" rel="noopener noreferrer" className="content-link">
+                    Ver Proyecto
+                </AppButton>
             </div>
             <div className="legislation-data-container">
                 <div className="legislation-data-item">
-                    <label><strong>Radicado:</strong> {legislation.FiledDate}</label>
-                    <br />
-                    {legislation.Author != ""? <><br /><label><strong>Autor(es):</strong> {legislation.Author}</label></> : <></>}
-                    {legislation.CoAuthor != ""? <><br /><label><strong>Co-Autor(es):</strong> {legislation.CoAuthor}</label></> : <></>}
-                    <br />
+                    <Typography component="p"><Typography component="span" sx={{ fontWeight: 'bold' }}>Radicado:</Typography> {legislation.FiledDate}</Typography>
+                    {legislation.Author !== '' ? (
+                        <Typography component="p"><Typography component="span" sx={{ fontWeight: 'bold' }}>Autor(es):</Typography> {legislation.Author}</Typography>
+                    ) : null}
+                    {legislation.CoAuthor !== '' ? (
+                        <Typography component="p"><Typography component="span" sx={{ fontWeight: 'bold' }}>Co-Autor(es):</Typography> {legislation.CoAuthor}</Typography>
+                    ) : null}
                     <p>{legislation.Title}</p>
-                    <label><strong>&Uacute;ltimo Evento:</strong> <span id="lastEvent">{legislation.LastEvent}</span></label>
+                    <Typography component="p"><Typography component="span" sx={{ fontWeight: 'bold' }}>Último Evento:</Typography> {legislation.LastEvent}</Typography>
                 </div>
             </div>
-            {
-                legislation.HasDocument?
+            {legislation.HasDocument ? (
                 <div className="legislation-doc-container">
                     <div className="legislation-doc-item-container">
                         <div className="legislation-doc-item-row-container" key={`${legislation.LegislationId}_${legislation.LegislationId}`}>
                             <div className="legislation-doc-item-row">
-                                <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between", columnGap: 10}}>
-                                    <div className="legislation-doc-item legislation-doc-title ">{legislation.DocDesc}</div>
+                                <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', columnGap: 10 }}>
+                                    <div className="legislation-doc-item legislation-doc-title">{legislation.DocDesc}</div>
                                     <div className="legislation-doc-item-row-controls">
-                                        <a href={legislation.DocUri} target="_blank" className="button legislation-doc-item-action">Ver Documento
-                                            <span>{!legislation.DocType? <></> : legislation.DocType.includes("doc")? <FontAwesomeIcon icon={faFileWord} className='doc' /> : <FontAwesomeIcon className='pdf' icon={faFilePdf} />}</span>
-                                        </a>
-                                        <div onClick={async () => await summarizeRecentLegislation()} className="button legislation-doc-item-action">{isSummarizing? <div className='spinner'></div> : <>Resumir con I.A. &#129302;</>}</div>
+                                        <AppButton
+                                            component="a"
+                                            href={legislation.DocUri}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="content-link legislation-doc-item-action"
+                                        >
+                                            Ver Documento
+                                            <span aria-hidden>{!legislation.DocType ? null : legislation.DocType.includes('doc') ? <FontAwesomeIcon icon={faFileWord} className="doc" /> : <FontAwesomeIcon className="pdf" icon={faFilePdf} />}</span>
+                                        </AppButton>
+                                        <AppButton
+                                            loading={isSummarizing}
+                                            className="legislation-doc-item-action"
+                                            onClick={() => void summarizeRecentLegislation()}
+                                            aria-label="Resumir con I.A."
+                                        >
+                                            <SummarizeLabel />
+                                        </AppButton>
                                     </div>
                                 </div>
-
-                                {legislation.EventDescription && legislation.EventDescription != ""? <div className="legislation-doc-desc">{legislation.EventDescription}</div> : <></>}
+                                {legislation.EventDescription && legislation.EventDescription !== '' ? (
+                                    <div className="legislation-doc-desc">{legislation.EventDescription}</div>
+                                ) : null}
                             </div>
-                            {
-                                showSummary? <><div className='story-ai-summary-container'><label>Resumen hecho por I.A.:</label><br /><br /><div>{decodeSummary(legislation.DocSummary)}</div></div></>
-                                : <></>
-                            }
+                            {showSummary ? (
+                                <div className="story-ai-summary-container">
+                                    <Typography component="p" sx={{ fontWeight: 'bold' }}>Resumen hecho por I.A.:</Typography>
+                                    <br />
+                                    <br />
+                                    <div>{decodeSummary(legislation.DocSummary)}</div>
+                                </div>
+                            ) : null}
                         </div>
                     </div>
-                </div>: <></>
-            }
+                </div>
+            ) : null}
             <br />
-        </div>
+            </CardContent>
+        </Card>
     );
 }
