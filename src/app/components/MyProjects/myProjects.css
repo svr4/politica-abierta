@@ -1,46 +1,58 @@
 .project-container {
     display: flex;
     flex-direction: row;
-    column-gap: 20px;
+    column-gap: 16px;
     flex-wrap: wrap;
-    padding: 20px;
-    row-gap: 20px;
-    width: 100vw;
+    padding: 0;
+    row-gap: 16px;
+    width: 100%;
 }
 
 .project-item {
-    padding: 25px;
-    box-shadow: 0px 1px 7px gray;
-    border-radius: 10px;
+    padding: 16px 18px;
+    box-shadow: none;
+    border: 1px solid var(--pa-border, #E2E8F0);
+    border-radius: var(--pa-radius-lg, 14px);
+    background: var(--pa-bg, #fff);
     width: 350px;
+    max-width: 100%;
     flex-basis: auto;
     flex-grow: 2;
     align-self: baseline;
+    color: var(--pa-text-primary, #0A0E14);
+    box-sizing: border-box;
 }
 
 .project-filter-container {
     display: flex;
     flex-direction: column;
-    row-gap: 20px;
-    align-items: center;
-    width: 100vw;
+    row-gap: 16px;
+    align-items: stretch;
+    width: 100%;
+    margin-bottom: 16px;
 }
 
 .project-filter-item {
-    width: 325px;
-    text-align: center;
+    width: 100%;
+    max-width: 325px;
+    text-align: left;
 }
 
-/* iPhone SE */
+.project-filter-item .committee-select,
+.project-filter-container select {
+    font-family: var(--pa-font, inherit);
+    font-size: 13px;
+    padding: 8px 12px;
+    border: 1px solid var(--pa-border-strong, #CBD5E0);
+    border-radius: 8px;
+    background: var(--pa-bg, #fff);
+    color: var(--pa-text-primary, #0A0E14);
+    height: 38px;
+    width: 100%;
+}
+
 @media only screen and (min-width: 281px) and (max-width: 600px) {
     .project-item {
-        padding: 25px;
-        box-shadow: 0px 1px 7px gray;
-        border-radius: 10px;
-        width: 300px;
-        flex-basis: auto;
-        flex-grow: 2;
-        align-self: baseline;
+        width: 100%;
     }
-
 }

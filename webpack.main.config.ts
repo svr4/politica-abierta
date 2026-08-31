@@ -1,7 +1,24 @@
-import type { Configuration } from 'webpack';
+import type { Configuration, WebpackPluginInstance } from 'webpack';
 
 import { rules } from './webpack.rules';
 import { plugins } from './webpack.plugins';
+
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const relocateLoader = require('@vercel/webpack-asset-relocator-loader');
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const AssetRelocatorPatch = require('@electron-forge/plugin-webpack/dist/util/AssetRelocatorPatch');
+
+const mainPlugins: WebpackPluginInstance[] = [
+  ...plugins,
+  {
+    apply(compiler) {
+      compiler.hooks.compilation.tap('webpack-asset-relocator-loader', (compilation) => {
+        relocateLoader.initAssetCache(compilation, 'native_modules');
+      });
+    },
+  },
+  new AssetRelocatorPatch.default(false, false),
+];
 
 export const mainConfig: Configuration = {
   /**
@@ -9,11 +26,10 @@ export const mainConfig: Configuration = {
    * that runs in the main process.
    */
   entry: './src/index.ts',
-  // Put your normal webpack config below here
   module: {
     rules,
   },
-  plugins,
+  plugins: mainPlugins,
   resolve: {
     extensions: ['.js', '.ts', '.jsx', '.tsx', '.css', '.json'],
   },

@@ -832,6 +832,13 @@ const createWindow = (): void => {
     return result;
   });
 
+  ipcMain.removeHandler('update-alert-rules');
+  ipcMain.handle('update-alert-rules', async (event, args) => {
+    const rules = args[0];
+    const result = await ImparcialApi.updateAlertRules(rules);
+    return result;
+  });
+
   ipcMain.removeHandler('update-subscribed-projects');
   ipcMain.handle('update-subscribed-projects', async (event, args) => {
     const legislationId = args[0];

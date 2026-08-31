@@ -96,3 +96,6 @@ out/
 *.db*
 *.sqlite
 *.spec
+
+# Local AI agent knowledge base (not for version control)
+docs/
