@@ -2,8 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
-import './styles/design-system.css';
-import './index.css';
 import { Provider } from 'react-redux';
 import { HashRouter as Router, Route, Routes, Navigate } from 'react-router';
 import { library } from '@fortawesome/fontawesome-svg-core';

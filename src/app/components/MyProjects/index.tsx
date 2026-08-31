@@ -9,6 +9,8 @@ import { faBell as farBell, faCircleLeft, faPenToSquare, faCircleXmark } from '@
 import { faBell as fasBell } from '@fortawesome/free-solid-svg-icons';
 
 import './myProjects.css';
+import '../LegislationList/LegislationList.css';
+import '../../App.css';
 import { useAppSelector, useAppDispatch } from '../../lib/hooks';
 import { updatePagination, updateIsFiltering, updateSubscribedLegislationTags, updateSubscribedLegislation, updateLegislationSource } from '../../lib/slices/legislationList';
 import { updateSubscribedLegislationSummary, updateSubscribedLegislationSubscription } from '../LegislationList/LegislationItem/hooks';

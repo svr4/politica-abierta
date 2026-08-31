@@ -9,7 +9,6 @@ import ListItemText from '@mui/material/ListItemText';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import Badge from '@mui/material/Badge';
-import Avatar from '@mui/material/Avatar';
 import Toolbar from '@mui/material/Toolbar';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
@@ -24,8 +23,6 @@ import { useAppDispatch } from '../../lib/hooks';
 import { updateConfig } from '../../lib/slices/appConfig';
 import {
     colorAccent,
-    colorAccentText,
-    colorAccentTint,
     colorPrimaryDark,
 } from '../../lib/theme';
 
@@ -123,23 +120,8 @@ export default function AppShell() {
                 ))}
             </List>
             <Box className="sidebar-footer">
-                <Avatar
-                    className="avatar"
-                    sx={{
-                        width: 30,
-                        height: 30,
-                        bgcolor: colorAccentTint,
-                        color: colorAccentText,
-                        fontSize: '12px',
-                        fontWeight: 600,
-                    }}
-                >
-                    JS
-                </Avatar>
-                <Box>
-                    <Typography className="name" component="div">Jose S.</Typography>
-                    <Typography className="email" component="div">jose@correo.com</Typography>
-                </Box>
+                <Typography className="name" component="div">Política Abierta</Typography>
+                <Typography className="email" component="div">Escritorio</Typography>
             </Box>
         </Box>
     );

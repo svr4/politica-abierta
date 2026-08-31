@@ -5,7 +5,6 @@ import { Notification, ArticleSummary, CommitteeConfig, Configuration, Configura
     LegislationEvent} from "./app/lib/models";
 import { getCommitteeIdsForChamber, Chamber } from "./app/lib/legislationMeta";
 import * as cheerio from 'cheerio';
-import { fromBuffer } from 'pdf2pic';
 import WordExtractor from 'word-extractor';
 import { chromium } from 'playwright';
 import https from 'node:https';
@@ -1042,16 +1041,6 @@ export default class ImparcialApi {
                 }
                 config.Config = JSON.parse(config.Config);
                 config.Config.AlertRules = rules;
-                const topicsAndLegislator = [
-                    ...rules.topics,
-                    ...(rules.legislator.trim() ? [rules.legislator.trim()] : []),
-                ];
-                if (Array.isArray(config.Config.News)) {
-                    config.Config.News = config.Config.News.map((n: NewsConfig) => ({
-                        ...n,
-                        NotificationFilters: topicsAndLegislator.length > 0 ? topicsAndLegislator : n.NotificationFilters,
-                    }));
-                }
                 await db.run("UPDATE Configuration SET Config = ? WHERE ConfigId = ?;", [JSON.stringify(config.Config), config.ConfigId]);
                 resolve({ Data: config, Error: null });
             } catch (error) {
