@@ -243,7 +243,7 @@ export default function LegislationConfig() {
 
     return (
         <>
-            <div style={{display: "flex", flexDirection: "row", justifyContent: "center", width: "100vw"}}>
+            <div style={{display: "flex", flexDirection: "row", justifyContent: "center", width: "100%"}}>
                 <div>
                     {isFetchingLaws ? (
                         <>

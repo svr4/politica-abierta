@@ -1,21 +1,38 @@
+html,
 body {
   height: 100%;
   width: 100%;
   margin: 0;
   padding: 0;
+  overflow: hidden;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
 }
 
 .titlebar {
-  height: 28px;
+  height: var(--pa-titlebar-h, 28px);
+  flex-shrink: 0;
   padding: 0;
   background: var(--pa-primary-dark, #0F2438);
   color: #E8EDF2;
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100vw;
+  width: 100%;
   font-size: 12px;
   font-weight: 600;
   app-region: drag;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+#root {
+  flex: 1;
+  min-height: 0;
+  min-width: 0;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
 }

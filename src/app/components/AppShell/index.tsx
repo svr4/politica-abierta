@@ -27,6 +27,16 @@ import {
 } from '../../lib/theme';
 
 const DRAWER_WIDTH = 224;
+const TITLEBAR_OFFSET = 'var(--pa-titlebar-h, 28px)';
+const DRAWER_PAPER_SX = {
+    width: DRAWER_WIDTH,
+    boxSizing: 'border-box' as const,
+    border: 'none',
+    background: 'var(--pa-primary-dark)',
+    color: '#E8EDF2',
+    top: TITLEBAR_OFFSET,
+    height: `calc(100% - ${TITLEBAR_OFFSET})`,
+};
 
 const navItems = [
     { to: '/', label: 'Feed', end: true, icon: <HomeOutlinedIcon /> },
@@ -127,13 +137,16 @@ export default function AppShell() {
     );
 
     return (
-        <Box className="app-shell" sx={{ display: 'flex', minHeight: '100vh', bgcolor: 'background.default' }}>
+        <Box
+            className="app-shell"
+            sx={{ display: 'flex', minHeight: 'calc(100vh - var(--pa-titlebar-h, 28px))', width: '100%', bgcolor: 'background.default' }}
+        >
             {isMobile ? (
                 <>
                     <Toolbar
                         sx={{
                             position: 'fixed',
-                            top: 0,
+                            top: TITLEBAR_OFFSET,
                             left: 0,
                             zIndex: theme.zIndex.drawer + 1,
                             width: '100%',
@@ -154,12 +167,7 @@ export default function AppShell() {
                         onClose={() => setMobileOpen(false)}
                         ModalProps={{ keepMounted: true }}
                         sx={{
-                            '& .MuiDrawer-paper': {
-                                width: DRAWER_WIDTH,
-                                background: 'var(--pa-primary-dark)',
-                                color: '#E8EDF2',
-                                border: 'none',
-                            },
+                            '& .MuiDrawer-paper': DRAWER_PAPER_SX,
                         }}
                     >
                         {drawer}
@@ -171,13 +179,7 @@ export default function AppShell() {
                     sx={{
                         width: DRAWER_WIDTH,
                         flexShrink: 0,
-                        '& .MuiDrawer-paper': {
-                            width: DRAWER_WIDTH,
-                            boxSizing: 'border-box',
-                            border: 'none',
-                            background: 'var(--pa-primary-dark)',
-                            color: '#E8EDF2',
-                        },
+                        '& .MuiDrawer-paper': DRAWER_PAPER_SX,
                     }}
                     open
                 >
@@ -190,7 +192,10 @@ export default function AppShell() {
                 className="main"
                 sx={{
                     flexGrow: 1,
-                    pt: { xs: '68px', sm: '24px' },
+                    minWidth: 0,
+                    width: '100%',
+                    // Clear fixed mobile toolbar; desktop padding comes from .main CSS.
+                    pt: isMobile ? '68px' : undefined,
                 }}
             >
                 <Outlet />

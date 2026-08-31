@@ -15,10 +15,12 @@
     border-radius: var(--pa-radius-lg, 14px);
     background: var(--pa-bg, #fff);
     width: 350px;
+    max-width: 100%;
     flex-basis: auto;
     flex-grow: 2;
     align-self: baseline;
     color: var(--pa-text-primary, #0A0E14);
+    box-sizing: border-box;
 }
 
 .project-filter-container {

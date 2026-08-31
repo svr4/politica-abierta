@@ -3,7 +3,10 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 100vw;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
 }
 
 .story-container > div {
@@ -27,8 +30,9 @@
   border-color: gray;
   border-style: solid;
   border-radius: 5px;
-  flex-basis: 50vw;
-  width: 50vw;
+  flex-basis: 50%;
+  width: 50%;
+  max-width: 100%;
   height: auto;
   box-shadow: 0px 1px 7px gray;
   padding: 0px 0px 10px 0px;
@@ -51,7 +55,8 @@
 
 .story-data-item {
   padding: 10px;
-  flex-basis: 50vw;
+  flex-basis: 50%;
+  min-width: 0;
 }
 
 .story-data-container p {
